@@ -7,7 +7,7 @@
       "type": "git",
       "url": "URL_OF_YOUR_REPOSITORY"
   },
-  "version": "2.0.7",
+  "version": "2.0.8",
   "scripts": {
     "clean": "rimraf dist",
     "compile": "npm run clean && cross-env NODE_ENV=production babel src/library --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,stories.js,__snapshots__",
