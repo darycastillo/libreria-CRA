@@ -42,12 +42,18 @@ const StickyTableCell = withStyles((theme) => ({
     columns={columns}
     headerTextProps={{
       variant: "h6",
-      color: "default",
     }}
   />
  */
 
-const MPTable = ({ columns, rows, headerTextProps, paperProps, bodyTextProps }) => {
+const MPTable = ({
+  columns = [],
+  rows = [],
+  headerTextProps,
+  paperProps,
+  bodyTextProps,
+  disabledPagination= false
+}) => {
   const theme = useTheme();
 
   const [page, setPage] = useState(0);
@@ -88,74 +94,90 @@ const MPTable = ({ columns, rows, headerTextProps, paperProps, bodyTextProps }) 
                       backgroundColor: theme.palette.background.paper,
                     }}
                   >
-                    <Typography variant="subtitle2" color='primary' {...headerTextProps}>{column.label}</Typography>
+                    <Typography
+                      variant="subtitle2"
+                      color="primary"
+                      {...headerTextProps}
+                    >
+                      {column.label}
+                    </Typography>
                   </Cell>
                 );
               })}
             </TableRow>
           </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                    {columns.map((column, index) => {
-                      const value = row[column.id];
-                      const Cell =
-                        column.id === "actions" ? StickyTableCell : TableCell;
+          {rows.length ? (
+            <TableBody>
+              {rows
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
+                  return (
+                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                      {columns.map((column, index) => {
+                        const value = row[column.id];
+                        const Cell =
+                          column.id === "actions" ? StickyTableCell : TableCell;
 
-                      return (
-                        <Cell
-                          key={index}
-                          align={column.align}
-                          style={{ minWidth: column.minWidth }}
-                        >
-                          {column.id === "actions" ? (
-                            column.actions.map(
-                              (action) =>
-                                (action.canRender === undefined ||
-                                  Boolean(action.canRender)) && (
-                                  <IconButton
-                                    key={action.name}
-                                    disabled={
-                                      action?.disabled && action.disabled(row)
-                                    }
-                                    onClick={(e) => action.onClick(e, row)}
-                                  >
-                                    {
-                                      <MPIcon
-                                      iconName={action.iconName || "Add"}
-                                    />
-                                    }
-                                  </IconButton>
-                                )
-                            )
-                          ) : (
-                            <Typography variant="body2" {...bodyTextProps}>{value}</Typography>
-                          )}
-                        </Cell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
+                        return (
+                          <Cell
+                            key={index}
+                            align={column.align}
+                            style={{ minWidth: column.minWidth }}
+                          >
+                            {column.id === "actions" ? (
+                              column.actions.map(
+                                (action) =>
+                                  (action.canRender === undefined ||
+                                    Boolean(action.canRender)) && (
+                                    <IconButton
+                                      key={action.name}
+                                      disabled={
+                                        action?.disabled && action.disabled(row)
+                                      }
+                                      onClick={(e) => action.onClick(e, row)}
+                                    >
+                                      {
+                                        <MPIcon
+                                          iconName={action.iconName || "Add"}
+                                        />
+                                      }
+                                    </IconButton>
+                                  )
+                              )
+                            ) : (
+                              <Typography variant="body2" {...bodyTextProps}>
+                                {value}
+                              </Typography>
+                            )}
+                          </Cell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          ) : (
+            <div style={{ padding: 16 }}>
+              <Typography variant="body2">Sin información</Typography>
+            </div>
+          )}
         </Table>
       </TableContainer>
-      <TablePagination
-        labelRowsPerPage="Filas por página:"
-        labelDisplayedRows={({ from, to, count }) =>
-          `${from}–${to} de ${count}`
-        }
-        rowsPerPageOptions={[5, 10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {!disabledPagination && (
+        <TablePagination
+          labelRowsPerPage="Filas por página:"
+          labelDisplayedRows={({ from, to, count }) =>
+            `${from}–${to} de ${count}`
+          }
+          rowsPerPageOptions={[5, 10, 25, 100]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      )}
     </Paper>
   );
 };

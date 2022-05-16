@@ -71,12 +71,11 @@ import MPTextField from "../MPTextField/MPTextField";
  */
 
 const MPForm = ({ formik, paper, paperProps }) => {
-  console.log("paper", paper)
   const fields = formik?.fields || [];
   const _formik = formik.formik;
   const Container = paper ?  Paper : Fragment;
   const _paperProps = paper ?  { style: { padding: "20px", borderRadius: "16px", ...paperProps?.style }, ...paperProps} : {};
-  console.log("mppppppp--->", _paperProps)
+
   return (
     <Container {..._paperProps}>
       <Grid container spacing={3}>

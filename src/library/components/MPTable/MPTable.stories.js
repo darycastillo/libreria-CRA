@@ -61,6 +61,7 @@ export const Default = Template.bind({});
 Default.args = {
   rows: rows,
   columns: columns,
+  disabledPagination:true,
   headerTextProps:{
     variant: "h6",
   },

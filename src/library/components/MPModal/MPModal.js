@@ -7,8 +7,9 @@ import {
   Button,
   Typography,
   DialogContentText,
+  IconButton,
 } from "@material-ui/core";
-
+import CloseIcon from '@material-ui/icons/Close';
 /**
  * Modal para uso general
  * @param {string}    title           Título del modal
@@ -22,24 +23,12 @@ import {
  * 
  * 
  * EJEMPLO DE USO:
- * const autocompleteProps = {
-    id: '3',
-    label: 'Departamento',
-    name: 'departamento_id',
-    gridItem: true,
-    type: 'autocomplete',
-    options: [
-      {
-      value: 0,
-      label: 'Jutiapa',
-    }
-    ],
-    validations: FieldValidations.requiredSelect,
-  };
+ * 
 
   @RENDERIZADO
-  <MPAutoComplete {...autocompleteProps} />
+  <MPModal {...modalProps} />
  */
+
 
 const MPModal = (props) => {
   const {
@@ -62,6 +51,10 @@ const MPModal = (props) => {
     dialogProps,
     fullWidth,
     maxWidth,
+    variantCancel,
+    cancelProps,
+    okProps,
+    closeBtn,
   } = props;
 
   return (
@@ -75,22 +68,42 @@ const MPModal = (props) => {
       maxWidth={maxWidth}
       {...dialogProps}
     >
-      <DialogTitle id="alert-dialog-title" {...titleProps}>
-        <Typography variant={variantTitle} children={title} />
+      <DialogTitle id="alert-dialog-title" disableTypography {...titleProps}>
+        <Typography variant={variantTitle} color={"primary"} children={title} />
+        {closeBtn ? (
+          <IconButton
+            aria-label="close"
+            style={{ position: "absolute", right: 24, top: 16, padding: 0 }}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
       </DialogTitle>
       <DialogContent id="alert-dialog-content" {...contentProps}>
-        <DialogContentText>
+        <DialogContentText component="div">
           <Typography variant={variantDescription} children={description} />
         </DialogContentText>
         {content}
       </DialogContent>
       <DialogActions id="alert-dialog-actions" {...actionsProps}>
-        <Button onClick={() => handleCancel()} color="secondary" autoFocus>
+        {
+          handleCancel && <Button
+          onClick={() => handleCancel()}
+          color="secondary"
+          variant={variantCancel}
+          {...cancelProps}
+        >
           {titleCancel}
-        </Button>
-        <Button onClick={() => handleOk()} color="primary" variant={variantOk}>
+        </Button>}
+        {handleOk && <Button
+          onClick={() => handleOk()}
+          color="primary"
+          variant={variantOk}
+          {...okProps}
+        >
           {titleOk}
-        </Button>
+        </Button>}
       </DialogActions>
     </Dialog>
   );

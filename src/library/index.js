@@ -12,11 +12,3 @@ export {
     MPForm,
     MPTextField
 };
-
-export default{ 
-    MPButton,
-    MPTable,
-    MPAutoComplete,
-    MPForm,
-    MPTextField
-};

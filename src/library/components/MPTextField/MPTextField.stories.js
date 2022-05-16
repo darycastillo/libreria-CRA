@@ -32,6 +32,7 @@ Multiline.args = {
   gridItem: true,
   multiline: true,
   minRows: 4,
+  enableCounter: false,
   gridProps: { md: 12 },
   inputProps: { maxLength: 300 },
   validations: FieldValidations.required,

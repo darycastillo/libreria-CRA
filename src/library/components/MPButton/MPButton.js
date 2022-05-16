@@ -11,7 +11,7 @@ import {Button} from "@material-ui/core";
 
 const MPButton = ({
   title='Aceptar', 
-  onClick=()=>console.log('Click'), 
+  onClick=()=>{}, 
   variant='contained',
   color="primary",
   ...props
