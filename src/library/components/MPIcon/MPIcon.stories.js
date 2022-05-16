@@ -17,7 +17,8 @@ export const Default = Template.bind({});
 Default.args = {
   title: "MPIcon",
   onClick: () => console.log("click"),
-  iconName: 'Edit',
+  iconName: "Edit",
   color: "primary",
-  props:{}
+  props: {},
+  mpIconProps: {},
 };
