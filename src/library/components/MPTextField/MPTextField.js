@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Grid, MenuItem } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 
@@ -53,6 +53,15 @@ const MPTextField = ({
   ...props
 }) => {
   const [counter, setCounter] = useState(maxCount);
+  const { name, formik } = props;
+
+  //Actualizar contador si tiene un valor inicial
+  useEffect(() => {
+    if (enableCounter) {
+      setCounter(() => maxCount - formik.values[name].length);
+    }
+    // eslint-disable-next-line
+  }, [formik?.values[name], props?.value]);
 
   const _changeValue = (e) =>
     props.onChange
@@ -61,7 +70,6 @@ const MPTextField = ({
       : undefined;
 
   const _formikConfig = () => {
-    const { name, formik } = props;
     if (!formik || !name) return {};
 
     return {
@@ -105,7 +113,15 @@ const MPTextField = ({
         fullWidth
         variant="outlined"
         {...props}
-        select = {Boolean(type === 'select')}
+        select={Boolean(type === "select")}
+        {...(type === "date"
+          ? {
+              type: "date",
+              InputLabelProps: {
+                shrink: true,
+              },
+            }
+          : {})}
         label={`${props.label}  ${enableCounter ? `(${counter})` : ""}`}
         onChange={_changeValue}
         {..._selectProps()}

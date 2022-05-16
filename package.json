@@ -89,6 +89,8 @@
     "@material-ui/styles": "^4.10.0",
     "date-arithmetic": "3.1.0",
     "material-table": "^1.68.0",
-    "material-ui-popup-state": "^1.5.3"
+    "material-ui-popup-state": "^1.5.3",
+    "formik": "^2.2.9",
+    "yup": "^0.32.11"
   }
 }

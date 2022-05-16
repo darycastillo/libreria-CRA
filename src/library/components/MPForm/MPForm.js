@@ -47,10 +47,16 @@ import MPTextField from "../MPTextField/MPTextField";
         name: 'departamento_id',
         gridItem: true,
         type: 'autocomplete',
-        options: {
-          value: -1,
-          label: 'Sin selección',
-        },
+        options: [
+          {
+            value: 1,
+            label: "Activo",
+          },
+          {
+            value: 0,
+            label: "Inactivo",
+          },
+        ],
         validations: FieldValidations.requiredSelect,
       },
       {
@@ -73,8 +79,13 @@ import MPTextField from "../MPTextField/MPTextField";
 const MPForm = ({ formik, paper, paperProps }) => {
   const fields = formik?.fields || [];
   const _formik = formik.formik;
-  const Container = paper ?  Paper : Fragment;
-  const _paperProps = paper ?  { style: { padding: "20px", borderRadius: "16px", ...paperProps?.style }, ...paperProps} : {};
+  const Container = paper ? Paper : Fragment;
+  const _paperProps = paper
+    ? {
+        style: { padding: "20px", borderRadius: "8px", ...paperProps?.style },
+        ...paperProps,
+      }
+    : {};
 
   return (
     <Container {..._paperProps}>
