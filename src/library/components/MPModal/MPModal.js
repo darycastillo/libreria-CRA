@@ -54,7 +54,7 @@ const MPModal = (props) => {
     variantCancel,
     cancelProps,
     okProps,
-    closeBtn,
+    closeBtn
   } = props;
 
   return (
