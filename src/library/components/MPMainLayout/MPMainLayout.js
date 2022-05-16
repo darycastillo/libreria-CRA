@@ -3,11 +3,12 @@ import Drawer from "@material-ui/core/Drawer";
 import { IconButton } from "@material-ui/core";
 import { Hidden, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { Notes } from "@material-ui/icons";
 import clsx from "clsx";
 import Skeleton from "@material-ui/lab/Skeleton";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import Breadcrumb from "./Breadcrumb";
+import MPMainLayoutFab from "./MPMainLayoutFab";
+import MPBreadcrumb from "./MPBreadcrumb";
+import MPIcon from "../MPIcon/MPIcon";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -110,13 +111,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "rgba(20, 38, 103, 0.12)",
   },
   breadcrumb: {
-    marginLeft: 16,
+    marginLeft: 0,
     marginRight: 16,
     [theme.breakpoints.up("sm")]: {
-      marginLeft: 32,
+      marginLeft: 0,
       marginRight: 32,
     },
   },
+  extraMarginBottom: { marginBottom: 60 },
 }));
 
 /**
@@ -132,7 +134,7 @@ const useStyles = makeStyles((theme) => ({
  * @param loading 
  *
  * EJEMPLO DE IMPLEMENTACIÓN:
- * <MPMainLayout
+ * <MainLayout
  *  id="main-layout"
  *  title="Escribe el titulo del Layout"
  *  subtitle="Escribe el subtitulo del Layout"
@@ -163,10 +165,10 @@ const useStyles = makeStyles((theme) => ({
  *    </Typography>
  *  }
  *   metasidebar={<Typography variant="body1">META_SIDEBAR</Typography>} >
- * </MPMainLayout>
+ * </MainLayout>
  */
 
-export default function MPMainLayout(props) {
+export default function MPMainLayout({ floatingButton, ...props }) {
   const classes = useStyles(props);
   const [state, setState] = React.useState({
     top: false,
@@ -205,7 +207,15 @@ export default function MPMainLayout(props) {
   );
 
   return (
-    <div className={clsx(classes.root, props.className)}>
+    <div
+      className={clsx(
+        classes.root,
+        {
+          [classes.extraMarginBottom]: floatingButton,
+        },
+        props.className
+      )}
+    >
       {props.metasidebar && (
         <Hidden mdDown>
           <div
@@ -315,6 +325,14 @@ export default function MPMainLayout(props) {
           }
         )}
       >
+        {props.breadcrumb && (
+          <div className={classes.breadcrumb}>
+            <MPBreadcrumb
+              currentPage={props.currentPageName}
+              links={props.breadcrumb}
+            />
+          </div>
+        )}
         <div className="flex mb-32 flex-col sm:flex-row">
           <div className="flex-1">
             <div className="flex justify-between flex-col md:flex-row">
@@ -333,14 +351,6 @@ export default function MPMainLayout(props) {
                     <span>{props.meta}</span>
                   </div>
                 </Hidden>
-              )}
-              {props.breadcrumb && (
-                <div className={classes.breadcrumb}>
-                  <Breadcrumb
-                    currentPage={props.currentPageName}
-                    links={props.breadcrumb}
-                  />
-                </div>
               )}
             </div>
             {(props.subtitle ||
@@ -393,21 +403,21 @@ export default function MPMainLayout(props) {
                 )}
               </div>
             )}
-            <Hidden mdUp>
-              {props.meta && (
+            {props.meta && (
+              <Hidden mdUp>
                 <div className="flex justify-between mt-8 items-center sm:items-start">
                   <span style={{ marginLeft: -12 }}>
                     <IconButton
                       aria-label=""
                       onClick={toggleDrawer("left", true)}
                     >
-                      <Notes />
+                      <MPIcon iconName="Notes" />
                     </IconButton>
                   </span>
                   <span>{props.meta}</span>
                 </div>
-              )}
-            </Hidden>
+              </Hidden>
+            )}
           </div>
         </div>
         <div
@@ -457,7 +467,20 @@ export default function MPMainLayout(props) {
               />
             </Fragment>
           ) : (
-            props.metacontent
+            <>
+              {props.metacontent}
+              {floatingButton && (
+                <MPMainLayoutFab
+                  variant={floatingButton.text ? "extended" : "circular"}
+                  {...floatingButton}
+                >
+                  {floatingButton.icon && (
+                    <MPIcon iconName={floatingButton.icon} />
+                  )}
+                  {floatingButton.text}
+                </MPMainLayoutFab>
+              )}
+            </>
           )}
         </div>
       </div>

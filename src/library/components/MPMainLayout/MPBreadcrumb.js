@@ -3,7 +3,7 @@ import { Breadcrumbs, Typography } from "@material-ui/core";
 import BreadcrumbLink from "@material-ui/core/Link";
 import { Link } from "react-router-dom";
 
-function Breadcrumb(props) {
+function MPBreadcrumb(props) {
   const { links } = props;
 
   //EJEMPLO DE USO
@@ -52,9 +52,11 @@ function Breadcrumb(props) {
           style={{ color: "rgba(0, 0, 0, 0.54)" }}
           component={Link}
           to={""}
-        ></BreadcrumbLink>
+        >
+          {""}
+        </BreadcrumbLink>
       )}
     </Breadcrumbs>
   );
 }
-export default Breadcrumb;
+export default MPBreadcrumb;
